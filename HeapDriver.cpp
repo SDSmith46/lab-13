@@ -28,33 +28,28 @@ void deleteCDs(ListArray<CD>* list)
 
 int main()
 {
-   ListArray<CD>* cds = CD::readCDs("alphabet.txt");
+   ListArray<CD>* cds = CD::readCDs("cds.txt");
    int num_items = cds->size();
    cout << num_items << endl;
 
-//while(true)
-//{
-	cout<<37<<endl;
+while(true)
+{
    HeapSkew<CD>* sh = new HeapSkew<CD>(&CD::compare_items);
-cout << 39 << endl;
    ListArrayIterator<CD>* iter = cds->iterator();
    while(iter->hasNext())
    {
       CD* cd = iter->next();
-	  cout << 44 << endl;
       sh->heapInsert(cd);
    }
    delete iter;
-cout << 48 << endl;
    while(!(sh->heapIsEmpty()))
    {
-	   cout << 51 << endl;
       CD* cd = sh->heapRemove();
       cd->displayCD();
    }
-cout << 55 << endl;
+
    delete sh;
-//}
+}
    deleteCDs(cds);
    delete cds;
 
