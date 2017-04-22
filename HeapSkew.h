@@ -3,6 +3,8 @@
 
 #include "BinaryTree.h"
 #include "wx/wx.h"
+#include <iostream>
+using namespace std;
 
 template < class T >
 class HeapSkew : public Drawable
@@ -61,23 +63,22 @@ BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
 	{
 		return left;
 	}
-	int comp = comp_items(left->getRootItem(), right->getRootItem);
+	int comp = compare_items(left->getRootItem(), right->getRootItem());
 	if (comp == 1)
 	{
 		merge(right, left);
 	}
-	BinaryTree<T>* LL = left->getLeft();
-	left->setLeft(NULL);
-	BinaryTree<T>* LR = left->getRight();
-	left->setRight(NULL);
-	left->setRight(LL);
+	BinaryTree<T>* LL = left->detachLeftSubtree();
+	BinaryTree<T>* LR = left->detachRightSubtree();
+	//left->setRight(NULL);
+	left->attachRightSubtree(LL);
 	if (LR == NULL)
 	{
-		LL->setLeft(right);
+		LL->attachLeftSubtree(right);
 	}
 	else
 	{
-		Left->setLeft(merge(LR,right));
+		left->attachLeftSubtree(merge(LR,right));
 		return left;
 	}
 	
@@ -86,14 +87,16 @@ BinaryTree<T>* HeapSkew<T>::merge(BinaryTree<T>* left, BinaryTree<T>* right)
 template < class T >
 void HeapSkew<T>::heapInsert(T* item)
 {
-	BinaryTree<T>* right = new BinaryTree(item);
+	BinaryTree<T>* right = new BinaryTree<T>(item);
+	cout << 89 << endl;
 	bt = merge(bt,right);
+	cout << 91 << endl;
 }
 
 template < class T >
 T* HeapSkew<T>::heapRemove()
 {
-	bt = merge(bt->getLeft(), bt->getRight());
+	bt = merge(bt->detachLeftSubtree(), bt->detachRightSubtree());
 }
 
 template < class T >
